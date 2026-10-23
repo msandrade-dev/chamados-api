@@ -1,3 +1,8 @@
+```Aluno:
+Márcio Santos Andrade
+Link para o repositório aberto do Github:
+https://github.com/msandrade-dev/chamados-api
+```
 # Testes e demonstracao da API
 
 Base usada nos testes: `http://localhost:8080`.
