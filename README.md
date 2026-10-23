@@ -4,6 +4,17 @@ API REST para gerenciamento de chamados de suporte técnico, com armazenamento e
 
 ## Executar
 
+O projeto exige um JDK 17 ou superior. No ambiente atual, use o comando completo
+para selecionar o JDK 17:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH="$JAVA_HOME/bin:$PATH"
+mvn spring-boot:run
+```
+
+Se o JDK 17 já estiver configurado como padrão no seu terminal, basta executar:
+
 ```bash
 mvn spring-boot:run
 ```
