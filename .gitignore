@@ -2,3 +2,4 @@ target/
 .idea/
 *.iml
 .vscode/
+.github/agents/chamados-api.agent.md
