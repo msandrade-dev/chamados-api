@@ -12,9 +12,13 @@ A API ficará disponível em `http://localhost:8080`.
 
 ## Endpoints
 
-- `GET /chamados`: lista chamados; aceita `prioridade` e `status` como filtros.
-- `GET /chamados/prioritarios`: lista chamados de prioridade alta ainda não resolvidos.
+- `GET /chamados`: lista todos os chamados.
 - `GET /chamados/{id}`: consulta um chamado pelo ID.
+- `GET /chamados/setor?nome=financeiro`: filtra chamados por setor.
+- `GET /chamados/prioridade?nivel=alta`: filtra chamados por prioridade.
+- `GET /chamados/busca?texto=impressora`: busca chamados pelo título.
+- `GET /chamados/criticos`: lista chamados de prioridade alta ainda não resolvidos.
+- `GET /chamados/resumo`: retorna as quantidades por status e o total geral.
 - `POST /chamados`: cria um chamado.
 
 Exemplo de corpo para criação:
