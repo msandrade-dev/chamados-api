@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -40,21 +41,53 @@ public class ChamadoController {
     ));
 
     @GetMapping
-    public List<Chamado> listar(
-            @RequestParam(required = false) Prioridade prioridade,
-            @RequestParam(required = false) Status status) {
+    public List<Chamado> listar() {
+        return chamados;
+    }
+
+    @GetMapping("/setor")
+    public List<Chamado> listarPorSetor(@RequestParam String nome) {
         return chamados.stream()
-                .filter(chamado -> prioridade == null || chamado.prioridade() == prioridade)
-                .filter(chamado -> status == null || chamado.status() == status)
+                .filter(chamado -> chamado.setor().equalsIgnoreCase(nome))
                 .toList();
     }
 
-    @GetMapping("/prioritarios")
-    public List<Chamado> listarPrioritarios() {
+    @GetMapping("/prioridade")
+    public List<Chamado> listarPorPrioridade(@RequestParam String nivel) {
+        Prioridade prioridade = Prioridade.valueOf(nivel.toUpperCase(Locale.ROOT));
+        return chamados.stream()
+                .filter(chamado -> chamado.prioridade() == prioridade)
+                .toList();
+    }
+
+    @GetMapping("/busca")
+    public List<Chamado> buscarPorTitulo(@RequestParam String texto) {
+        String textoNormalizado = texto.toLowerCase(Locale.ROOT);
+        return chamados.stream()
+                .filter(chamado -> chamado.titulo().toLowerCase(Locale.ROOT).contains(textoNormalizado))
+                .toList();
+    }
+
+    @GetMapping("/criticos")
+    public List<Chamado> listarCriticos() {
         return chamados.stream()
                 .filter(chamado -> chamado.prioridade() == Prioridade.ALTA)
                 .filter(chamado -> chamado.status() != Status.RESOLVIDO)
                 .toList();
+    }
+
+    @GetMapping("/resumo")
+    public Resumo resumir() {
+        long abertos = chamados.stream()
+                .filter(chamado -> chamado.status() == Status.ABERTO)
+                .count();
+        long emAndamento = chamados.stream()
+                .filter(chamado -> chamado.status() == Status.EM_ANDAMENTO)
+                .count();
+        long resolvidos = chamados.stream()
+                .filter(chamado -> chamado.status() == Status.RESOLVIDO)
+                .count();
+        return new Resumo(abertos, emAndamento, resolvidos, chamados.size());
     }
 
     @GetMapping("/{id}")
@@ -85,6 +118,14 @@ public class ChamadoController {
             @NotBlank String setor,
             @NotNull Prioridade prioridade,
             @NotNull Status status
+    ) {
+    }
+
+    public record Resumo(
+            long abertos,
+            long emAndamento,
+            long resolvidos,
+            long total
     ) {
     }
 }
