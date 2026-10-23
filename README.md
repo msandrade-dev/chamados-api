@@ -21,6 +21,8 @@ mvn spring-boot:run
 
 A API ficará disponível em `http://localhost:8080`.
 
+As evidências das requisições e respostas estão em [DEMONSTRACAO.md](DEMONSTRACAO.md).
+
 ## Endpoints
 
 - `GET /chamados`: lista todos os chamados.
